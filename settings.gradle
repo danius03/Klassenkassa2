@@ -1,0 +1,2 @@
+rootProject.name='Klassenkassa'
+include ':app'
