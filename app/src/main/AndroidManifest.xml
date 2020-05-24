@@ -16,10 +16,6 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".activities.NotificationDetails"></activity>
 
-        <service
-            android:name=".activities.NotificationService"
-            android:exported="false" />
-
         <activity android:name=".activities.SettingsActivity" />
         <activity android:name=".activities.DetailActivity" />
         <activity android:name=".activities.Activity2" />
