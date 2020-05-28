@@ -39,7 +39,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/studentValue_textView"
+                android:id="@+id/studentValues_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
