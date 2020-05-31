@@ -1,6 +1,8 @@
 package com.example.klassenkassa.data;
 
-public class Student implements Comparable<Student>{
+import java.io.Serializable;
+
+public class Student implements Comparable<Student>, Serializable {
     private int studentID;
     private int categoryID;
     private String firstname;
