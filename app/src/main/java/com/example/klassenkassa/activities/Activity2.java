@@ -35,6 +35,7 @@ import java.util.concurrent.ExecutionException;
 public class Activity2 extends AppCompatActivity implements OnSelectionChangedListener {
 
     private DetailFragment detailFragment;
+    private MasterFragment masterFragment;
     private boolean showDetail;
     private ListView slistView;
     private StudentAdapter sAdapter;
@@ -49,8 +50,10 @@ public class Activity2 extends AppCompatActivity implements OnSelectionChangedLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         detailFragment= (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_detail);
+        masterFragment= (MasterFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_master);
         showDetail = detailFragment !=null && detailFragment.isInLayout();
         configActionBar();
+        masterFragment.readStudents();
 
         slistView = findViewById(R.id.student_listView);
         sAdapter = new StudentAdapter(this, R.layout.student_list, students);
@@ -98,13 +101,13 @@ public class Activity2 extends AppCompatActivity implements OnSelectionChangedLi
 
         switch(id) {
             case R.id.new_student:
-                detailFragment.createNewStudent();
+                masterFragment.createNewStudent();
                 break;
             case R.id.save_students:
-                detailFragment.saveStudents();
+                masterFragment.saveStudents();
                 break;
             case R.id.load_students:
-                detailFragment.loadStudents();
+                masterFragment.loadStudents();
                 break;
             case android.R.id.home:
                 Intent data=new Intent(this, MainActivity.class);
