@@ -35,18 +35,4 @@ public class DetailFragment extends Fragment {
 
     }
 
-    public void loadStudents()
-    {
-
-    }
-
-    public void saveStudents()
-    {
-
-    }
-
-    public void createNewStudent()
-    {
-
-    }
 }

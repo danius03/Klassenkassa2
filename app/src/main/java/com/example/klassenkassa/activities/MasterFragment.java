@@ -20,7 +20,6 @@ public class MasterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View v=inflater.inflate(R.layout.fragment_master, container, false);
         initializeViews(v);
         return v;
@@ -38,6 +37,25 @@ public class MasterFragment extends Fragment {
     private void initializeViews(View view)
     {
 
+
+    }
+
+    public void loadStudents()
+    {
+
+    }
+
+    public void saveStudents()
+    {
+
+    }
+
+    public void createNewStudent()
+    {
+
+    }
+
+    public void readStudents() {
 
     }
 }
