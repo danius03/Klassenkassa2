@@ -38,7 +38,7 @@
 				if($connection){
 					try{
           $data = json_decode(file_get_contents("php://input"));
-            if(!empty($data->studentID) && !empty($data->categoryID) && !empty($data->firstname) !empty($data->lastname) && !empty($data->debts) && !empty($data->status) && !empty($data->additionalData)){
+            if(!empty($data->studentID) && !empty($data->categoryID) && !empty($data->firstname) && !empty($data->lastname) && !empty($data->debts) && !empty($data->status) && !empty($data->additionalData)){
 
               $sql = "INSERT INTO student (studentID,categoryID,firstname,lastname,debts,status,additionalData)
                       VALUES ('{$data->studentID}','{$data->categoryID}','{$data->firstname}','{$data->lastname}','{$data->debts}','{$data->status}','{$data->additionalData}');";
