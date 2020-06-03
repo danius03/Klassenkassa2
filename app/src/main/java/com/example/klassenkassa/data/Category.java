@@ -6,11 +6,21 @@ public class Category implements Comparable<Category>{
     private int categoryID;
     private String name;
     private LocalDate dueDate;
+    private float cost;
 
-    public Category(int categoryID, String name, LocalDate dueDate) {
+    public Category(int categoryID, String name, LocalDate dueDate, float cost) {
         this.categoryID = categoryID;
         this.name = name;
         this.dueDate = dueDate;
+        this.cost = cost;
+    }
+
+    public float getCost() {
+        return cost;
+    }
+
+    public void setCost(float cost) {
+        this.cost = cost;
     }
 
     public int getCategoryID() {
