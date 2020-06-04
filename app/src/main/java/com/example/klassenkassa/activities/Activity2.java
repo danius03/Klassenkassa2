@@ -37,8 +37,7 @@ public class Activity2 extends AppCompatActivity implements OnSelectionChangedLi
     private DetailFragment detailFragment;
     private MasterFragment masterFragment;
     private boolean showDetail;
-    private ListView slistView;
-    private StudentAdapter sAdapter;
+
     private List<Student> students = new ArrayList<>();
     private String username = "app";
     private String password = "user2020";
@@ -48,22 +47,16 @@ public class Activity2 extends AppCompatActivity implements OnSelectionChangedLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_2);
         detailFragment= (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_detail);
         masterFragment= (MasterFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_master);
         showDetail = detailFragment !=null && detailFragment.isInLayout();
         configActionBar();
-        masterFragment.readStudents();
-
-        slistView = findViewById(R.id.student_listView);
-        sAdapter = new StudentAdapter(this, R.layout.student_list, students);
-        slistView.setAdapter(sAdapter);
-
-        fillItemsList();
-
         if(getIntent().getExtras() != null){
             currentCategoryID = getIntent().getExtras().getInt("selection");
         }
+        fillItemsList();
+        masterFragment.setStudents(students);
     }
 
 
@@ -125,16 +118,19 @@ public class Activity2 extends AppCompatActivity implements OnSelectionChangedLi
         try {
             response = requestGET.execute("").get();
             JSONArray jsonArray = new JSONArray(response);
+            jsonArray = jsonArray.optJSONArray(0);
             for(int i = 0; i<jsonArray.length(); i++){
                 JSONObject jsonObject = jsonArray.optJSONObject(i);
-                int studentID = jsonObject.getInt("studentID");
-                String firstname = jsonObject.getString("firstname");
-                String lastname = jsonObject.getString("lastname");
-                double debts = jsonObject.getDouble("debts");
-                String statusString = jsonObject.getString("status");
-                String additionalData = jsonObject.getString("additionalData");
-                Status status = Status.valueOf(statusString);
-                students.add(new Student(studentID, currentCategoryID, firstname, lastname, debts, status, additionalData));
+                if(jsonObject.getInt("categoryID")==currentCategoryID) {
+                    int studentID = jsonObject.getInt("studentID");
+                    String firstname = jsonObject.getString("firstname");
+                    String lastname = jsonObject.getString("lastname");
+                    double debts = jsonObject.getDouble("debts");
+                    String statusString = jsonObject.getString("status");
+                    String additionalData = jsonObject.getString("additionalData");
+                    Status status = Status.valueOf(statusString);
+                    students.add(new Student(studentID, currentCategoryID, firstname, lastname, debts, status, additionalData));
+                }
             }
         }catch (ExecutionException e){
             e.printStackTrace();

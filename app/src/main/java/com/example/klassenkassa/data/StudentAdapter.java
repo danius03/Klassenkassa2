@@ -42,8 +42,8 @@ public class StudentAdapter extends BaseAdapter {
         Student s = students.get(position);
         View listItem = (convertView == null) ?inflater.inflate(this.layoutId, null) : convertView;
         ((TextView) (listItem.findViewById(R.id.studentName_textView))).setText(s.getLastname()+" "+s.getFirstname());
-        ((TextView) (listItem.findViewById(R.id.studentNumber_textView))).setText(s.getStudentID());
-        ((TextView) (listItem.findViewById(R.id.studentValues_textView))).setText(s.getCost()+"");
+        ((TextView) (listItem.findViewById(R.id.studentNumber_textView))).setText(s.getStudentID()+"");
+        ((TextView) (listItem.findViewById(R.id.studentValues_textView))).setText(s.getCost()+"€");
         ((TextView) (listItem.findViewById(R.id.studentStatus_textView))).setText(s.getStatus()+"");
         return listItem;
     }

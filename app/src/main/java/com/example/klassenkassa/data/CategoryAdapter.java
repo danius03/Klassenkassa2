@@ -46,6 +46,7 @@ public class CategoryAdapter extends BaseAdapter {
         View listItem = (convertView == null) ?inflater.inflate(this.layoutId, null) : convertView;
         ((TextView) (listItem.findViewById(R.id.categoryName_textView))).setText(c.getName());
         ((TextView) (listItem.findViewById(R.id.dueDate_textView))).setText(c.getDueDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        ((TextView) (listItem.findViewById(R.id.cost_textView))).setText(c.getCost()+"€");
         return listItem;
     }
 }

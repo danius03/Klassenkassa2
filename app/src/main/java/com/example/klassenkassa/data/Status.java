@@ -1,5 +1,5 @@
 package com.example.klassenkassa.data;
 
 public enum Status {
-    BEZAHLT, AUSSTEHEND, NICHT_BEZAHLT;
+    BEZAHLT, AUSSTEHEND, TEILWEISE_BEZAHLT;
 }
