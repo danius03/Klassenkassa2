@@ -49,7 +49,23 @@
     					$res = $conn->query($sql);
               if($res){
                 http_response_code(201);
-                echo json_encode(array("message" => "Student put."));
+                echo json_encode(array("message" => "Student was put."));
+              }else{
+                http_response_code(503);
+                echo json_encode(array("message" => "Unable to put student."));
+              }
+
+    					closeConnection();//close connection to database
+            }else if(!empty($data->studentID) && !empty($data->firstname) && !empty($data->lastname) && !empty($data->debts) && !empty($data->status)){
+
+              $sql = "UPDATE student
+                      SET studentID = '{$data->studentID}',firstname = '{$data->firstname}', lastname = '{$data->lastname}', debts = '{$data->debts}', status = '{$data->status}', additionalData = ''
+                      WHERE categoryID = '{$categoryID}' AND studentID = '{$studentID}';";
+
+    					$res = $conn->query($sql);
+              if($res){
+                http_response_code(201);
+                echo json_encode(array("message" => "Student was put."));
               }else{
                 http_response_code(503);
                 echo json_encode(array("message" => "Unable to put student."));
