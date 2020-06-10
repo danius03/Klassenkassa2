@@ -7,7 +7,7 @@ public class Student implements Comparable<Student>, Serializable {
     private int categoryID;
     private String firstname;
     private String lastname;
-    private double cost;
+    private float cost;
     private Status status;
     private String additionalData;
 
@@ -16,7 +16,7 @@ public class Student implements Comparable<Student>, Serializable {
         this.categoryID = categoryID;
         this.firstname = firstname;
         this.lastname = lastname;
-        this.cost = cost;
+        this.cost = (float)((int)(cost*100))/100;
         this.status = status;
         this.additionalData = additionalData;
     }
@@ -53,11 +53,11 @@ public class Student implements Comparable<Student>, Serializable {
         this.lastname = lastname;
     }
 
-    public double getCost() {
+    public float getCost() {
         return cost;
     }
 
-    public void setCost(double cost) {
+    public void setCost(float cost) {
         this.cost = cost;
     }
 

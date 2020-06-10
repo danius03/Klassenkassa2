@@ -8,72 +8,59 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <TableLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:orientation="vertical"
         android:paddingLeft="10dp"
         android:paddingTop="10dp"
         android:paddingRight="10dp">
 
-        <TableRow
+        <TextView
+            android:id="@+id/studentNumber_textView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="24sp" />
 
-            <TextView
-                android:id="@+id/studentNumber_textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.1"
-                android:text="1" />
-
-            <TextView
-                android:id="@+id/studentName_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
-                android:layout_weight="300"
-                android:paddingLeft="10dp"
-                android:text="Schülername"
-                android:textColor="#000000"
-                android:textSize="14sp" />
-        </TableRow>
-
-        <TableRow
+        <TextView
+            android:id="@+id/studentName_textView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:textColor="#000000"
+            android:textSize="24sp" />
 
-            <TextView
-                android:id="@+id/studentValues_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Betrag"
-                android:textColor="#000000"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/studentStatus_textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="StatusdesSchülers"
-                android:textColor="#000000" />
-        </TableRow>
-
-        <TableRow
+        <TextView
+            android:id="@+id/studentValues_textView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="#000000"
+            android:textSize="24sp" />
 
-            <TextView
-                android:id="@+id/studentData_textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Zusätzliche Daten"
-                android:textColor="#000000" />
-        </TableRow>
+        <TextView
+            android:id="@+id/studentStatus_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="#000000"
+            android:textSize="24sp" />
 
-    </TableLayout>
+        <TextView
+            android:id="@+id/studentData_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+    </LinearLayout>
 
 </FrameLayout>

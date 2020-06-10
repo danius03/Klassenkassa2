@@ -51,6 +51,10 @@ public class MasterFragment extends Fragment {
         students=new ArrayList<>();
         slistView = view.findViewById(R.id.student_listView);
         registerForContextMenu(slistView);
+        slistView.setOnItemClickListener((parent, view1, position, id) -> {
+            Student item=students.get(position);
+            listener.OnSelectionChanged(position, item);
+        });
     }
 
     @Override

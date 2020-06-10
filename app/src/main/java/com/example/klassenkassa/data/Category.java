@@ -12,7 +12,7 @@ public class Category implements Comparable<Category>{
         this.categoryID = categoryID;
         this.name = name;
         this.dueDate = dueDate;
-        this.cost = cost;
+        this.cost = (float)((int)(cost*100))/100;
     }
 
     public float getCost() {
