@@ -170,7 +170,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void showSettings()
     {
-
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivityForResult(intent, 1);
     }
 
     private void setUpDialog(final View vDialog, int pos)

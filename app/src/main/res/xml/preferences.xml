@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="preference_notifications"
+        android:summary="Notifications zur Erinnerung der fälligen Zahlungen"
+        android:title="Notifications" />
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="preference_darkmode"
+        android:summary="Darkmode für die App"
+        android:title="Darkmode" />
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="preference_dynamic_darkmode"
+        android:summary="Der Darkmode wird automatisch aktiviert, wenn die Umgebungshelligkeit des Gerätes dunkel genug ist"
+        android:title="Dynamischer Darkmode" />
 </PreferenceScreen>
