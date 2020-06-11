@@ -10,7 +10,7 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="10"
+        android:layout_weight="2"
         android:gravity="center"
         android:text="Neue Kategorie"
         android:textColor="#0661F3"
@@ -24,7 +24,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -37,14 +37,6 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/textView6"
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:paddingTop="10dp"
-                android:text="Fällig:"
-                android:textSize="18sp" />
-
-            <TextView
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
@@ -52,11 +44,19 @@
                 android:text="Grundkosten:"
                 android:textSize="18sp" />
 
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:paddingTop="10dp"
+                android:text="Fällig:"
+                android:textSize="18sp" />
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -69,14 +69,6 @@
                 android:inputType="textPersonName" />
 
             <EditText
-                android:id="@+id/categoryDate_dateText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Pflichtfeld"
-                android:inputType="date" />
-
-            <EditText
                 android:id="@+id/categoryCost_plainText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -85,6 +77,18 @@
 
         </LinearLayout>
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <CalendarView
+            android:id="@+id/categoryDate_calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </LinearLayout>
 
 </LinearLayout>

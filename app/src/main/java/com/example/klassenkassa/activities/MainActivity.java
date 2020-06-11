@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -29,7 +30,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -153,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
         final View vDialog = getLayoutInflater().inflate(R.layout.add_category, null);
         EditText et_cat=vDialog.findViewById(R.id.categoryName_plainText);
         et_cat.setText(categories.get(position).getName());
-        EditText et_due=vDialog.findViewById(R.id.categoryDate_dateText);
+        EditText et_due=vDialog.findViewById(R.id.categoryDate_calendarView);
         et_due.setText(categories.get(position).getDueDate().format( DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         EditText et_cost=vDialog.findViewById(R.id.categoryCost_plainText);
         et_cost.setText(categories.get(position).getCost()+"");
@@ -183,8 +186,8 @@ public class MainActivity extends AppCompatActivity {
     private void handleDialog(View vDialog, int pos) {
         EditText et_name = vDialog.findViewById(R.id.categoryName_plainText);
         EditText et_cost=vDialog.findViewById(R.id.categoryCost_plainText);
-        EditText et_due=vDialog.findViewById(R.id.categoryDate_dateText);
-        LocalDate date=LocalDate.parse(et_due.getText().toString(), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        CalendarView et_due=vDialog.findViewById(R.id.categoryDate_calendarView);
+        LocalDate date = Instant.ofEpochMilli(et_due.getDate()).atZone(ZoneId.systemDefault()).toLocalDate();
         String response = null;
         double cost=0;
         if(!et_cost.getText().toString().equals("")) {
