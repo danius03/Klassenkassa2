@@ -13,13 +13,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.klassenkassa.R;
+import com.example.klassenkassa.Requests.DELETERequest;
 import com.example.klassenkassa.Requests.GETRequest;
+import com.example.klassenkassa.Requests.POSTRequest;
 import com.example.klassenkassa.Requests.PUTRequest;
 import com.example.klassenkassa.data.Status;
 import com.example.klassenkassa.data.Student;
@@ -30,6 +33,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -43,6 +50,7 @@ public class MasterFragment extends Fragment {
     private String username = "app";
     private String password = "user2020";
     private final String URL = "http://restapi.eu";
+    private int currentCategoryID;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -97,7 +105,6 @@ public class MasterFragment extends Fragment {
             AdapterView.AdapterContextMenuInfo info =(AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
             if   ( info  !=  null ){
                 delete(info.position);
-                students.remove(info.position);
             }
             return true;
         }else if(item.getItemId()== R.id.change_status)
@@ -167,9 +174,29 @@ public class MasterFragment extends Fragment {
     }
 
     private void delete(int position) {
+        DELETERequest task = new DELETERequest(URL + "/deletestudent.php?username=" + username + "&password=" + password + "&categoryID=" + students.get(position).getCategoryID() + "&studentID=" + students.get(position).getStudentID());
+        task.execute("");
+        //maybeAddInterruption (sleep)
+        String jsonResponse = task.getJsonResponse();
+        students.remove(position);
+        sAdapter.notifyDataSetChanged();
     }
 
     private void edit(int position) {
+        final View vDialog = getLayoutInflater().inflate(R.layout.add_student, null);
+
+        EditText et_number = vDialog.findViewById(R.id.studentNumber_numberText);
+        et_number.setText(students.get(position).getStudentID() + "");
+        EditText et_firstName = vDialog.findViewById(R.id.studentFirstName_plainText);
+        et_firstName.setText(students.get(position).getFirstname());
+        EditText et_lastName = vDialog.findViewById(R.id.studentSurname_plainText);
+        et_lastName.setText(students.get(position).getLastname());
+        EditText et_cost = vDialog.findViewById(R.id.studentCost_plainText);
+        et_cost.setText("");
+        EditText et_data = vDialog.findViewById(R.id.studentData_plainText);
+        et_data.setText(students.get(position).getAdditionalData());
+
+        setUpDialog(vDialog, position);
     }
 
     public void loadStudents()
@@ -208,8 +235,76 @@ public class MasterFragment extends Fragment {
 
     }
 
-    public void createNewStudent()
+    public void createNewStudent(int currentCategoryID)
     {
+        this.currentCategoryID = currentCategoryID;
+
+        final View vDialog = getLayoutInflater().inflate(R.layout.add_student, null);
+        setUpDialog(vDialog, -1);
+    }
+
+    private void setUpDialog(final View vDialog, int pos)
+    {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+        alertDialog.setView(vDialog).setPositiveButton("SUBMIT", (dialog,which)-> handleDialog(vDialog, pos)).setNegativeButton("CANCEL", null).show();
+    }
+
+    private void handleDialog(View vDialog, int pos) {
+        Activity2 activity2 = new Activity2();
+
+        EditText et_number = vDialog.findViewById(R.id.studentNumber_numberText);
+        EditText et_firstName = vDialog.findViewById(R.id.studentFirstName_plainText);
+        EditText et_lastName = vDialog.findViewById(R.id.studentSurname_plainText);
+        EditText et_cost = vDialog.findViewById(R.id.studentCost_plainText);
+        EditText et_data = vDialog.findViewById(R.id.studentData_plainText);
+        String response = null;
+
+        String jsonRequest= "{\"studentID\":"+"\""+et_number.getText().toString()+"\""+",\"categoryID\":"+"\""+currentCategoryID+"\","+"\"firstname\":"+"\""+et_firstName.getText().toString()+"\","+"\"lastname\":"+"\""+et_lastName.getText().toString()+"\","+"\"debts\":"+"\""+et_cost.getText().toString()+"\","+"\"status\":"+"\""+Status.AUSSTEHEND+"\","+"\"additionalData\":"+"\""+et_data.getText().toString()+"\"}";
+        if(pos==-1) {
+            POSTRequest request_post = new POSTRequest(URL + "/createstudent.php?username=" + username + "&password=" + password);
+            try {
+                response=request_post.execute(jsonRequest).get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            try {
+                JSONObject jsonObject=new JSONObject(response);
+                if(jsonObject.getString("message").equals("Student was created."))
+                {
+                    loadStudents();
+                    sAdapter.notifyDataSetChanged();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }else {
+
+            students.get(pos).setStudentID(Integer.valueOf(et_number.getText().toString()));
+            students.get(pos).setFirstname(et_firstName.getText().toString());
+            students.get(pos).setLastname(et_lastName.getText().toString());
+            students.get(pos).setCost(Float.valueOf(et_cost.getText().toString()));
+            students.get(pos).setAdditionalData(et_data.getText().toString());
+            PUTRequest request_post = new PUTRequest(URL + "/putstudent.php?username=" + username + "&password=" + password+ "&categoryID=" + students.get(pos).getCategoryID() + "&studentID=" + students.get(pos).getStudentID());
+            try {
+                response=request_post.execute(jsonRequest).get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            try {
+                JSONObject jsonObject=new JSONObject(response);
+                if(jsonObject.getString("message").equals("Student was put."))
+                {
+                    loadStudents();
+                    sAdapter.notifyDataSetChanged();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 

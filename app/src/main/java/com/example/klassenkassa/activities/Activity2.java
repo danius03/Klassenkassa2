@@ -1,6 +1,7 @@
 package com.example.klassenkassa.activities;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -38,11 +39,13 @@ public class Activity2 extends AppCompatActivity implements OnSelectionChangedLi
     private MasterFragment masterFragment;
     private boolean showDetail;
 
+    public int currentCategoryID;
+
     private List<Student> students = new ArrayList<>();
     private String username = "app";
     private String password = "user2020";
     private final String URL = "http://restapi.eu";
-    private int currentCategoryID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,9 +86,10 @@ public class Activity2 extends AppCompatActivity implements OnSelectionChangedLi
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        getMenuInflater().inflate(R.menu.action_menue,menu);
+        getMenuInflater().inflate(R.menu.action_2_menue,menu);
         return super.onCreateOptionsMenu(menu);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
@@ -94,7 +98,8 @@ public class Activity2 extends AppCompatActivity implements OnSelectionChangedLi
 
         switch(id) {
             case R.id.new_student:
-                masterFragment.createNewStudent();
+                masterFragment.createNewStudent(currentCategoryID);
+
                 break;
             case R.id.save_students:
                 masterFragment.saveStudents();
@@ -141,6 +146,8 @@ public class Activity2 extends AppCompatActivity implements OnSelectionChangedLi
         }
 
     }
+
+
 
 
 }
