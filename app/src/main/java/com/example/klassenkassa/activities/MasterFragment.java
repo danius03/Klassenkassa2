@@ -140,7 +140,11 @@ public class MasterFragment extends Fragment {
         Status newStatus = (Status) changeStatusSpinner.getSelectedItem();
 
         if(changeStatusSpinner.getSelectedItem().equals(Status.TEILWEISE_BEZAHLT)){
-            newCost = newCost - Float.parseFloat(changeStatusValue.getText().toString());
+            if(!changeStatusValue.getText().toString().equals("")) {
+                newCost = newCost - Float.parseFloat(changeStatusValue.getText().toString());
+            }else{
+                newCost = -1.00f;
+            }
         }else if(changeStatusSpinner.getSelectedItem().equals(Status.BEZAHLT)){
             newCost = 0.00f;
         }
