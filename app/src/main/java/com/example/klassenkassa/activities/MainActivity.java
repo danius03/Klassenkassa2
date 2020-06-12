@@ -2,9 +2,11 @@ package com.example.klassenkassa.activities;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -49,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
     private String password = "user2020";
     private final String URL = "http://restapi.eu";
     private String jsonRequest="";
+    private SharedPreferences prefs;
+    private SharedPreferences.OnSharedPreferenceChangeListener preferencesChangeListener;
+    boolean darkmode = false;
+    boolean allowDarkmodeSensor = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +75,19 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("selection", selection);
             startActivity(intent);
         });
+        prefs= PreferenceManager.getDefaultSharedPreferences(this);
+        preferencesChangeListener =(sharePref, key) -> preferenceChanged(sharePref, key);
+        prefs.registerOnSharedPreferenceChangeListener(preferencesChangeListener);
+        getPrefs(prefs);
+    }
+
+    private void preferenceChanged(SharedPreferences sharedPrefs, String key) {
+        getPrefs(sharedPrefs);
+    }
+
+    private void getPrefs(SharedPreferences sharedPrefs) {
+        darkmode = sharedPrefs.getBoolean("preference_darkmode", false);
+        allowDarkmodeSensor = sharedPrefs.getBoolean("preference_dynamic_darkmode", false);
     }
 
     @Override
