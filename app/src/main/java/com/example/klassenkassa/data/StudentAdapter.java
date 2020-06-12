@@ -1,6 +1,7 @@
 package com.example.klassenkassa.data;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ public class StudentAdapter extends BaseAdapter {
     private List<Student> students;
     private int layoutId;
     private LayoutInflater inflater;
+    private boolean darkmode;
 
     public StudentAdapter(Context ctx, int layoutId, List<Student> students) {
         this.students = students;
@@ -45,6 +47,27 @@ public class StudentAdapter extends BaseAdapter {
         ((TextView) (listItem.findViewById(R.id.studentNumber_textView))).setText(s.getStudentID()+"");
         ((TextView) (listItem.findViewById(R.id.studentValues_textView))).setText(s.getCost()+"€");
         ((TextView) (listItem.findViewById(R.id.studentStatus_textView))).setText(s.getStatus()+"");
+        if(darkmode)
+        {
+            ((TextView) (listItem.findViewById(R.id.studentName_textView))).setTextColor(Color.WHITE);
+            ((TextView) (listItem.findViewById(R.id.studentNumber_textView))).setTextColor(Color.WHITE);
+            ((TextView) (listItem.findViewById(R.id.studentValues_textView))).setTextColor(Color.WHITE);
+            ((TextView) (listItem.findViewById(R.id.studentStatus_textView))).setTextColor(Color.WHITE);
+        }else
+        {
+            ((TextView) (listItem.findViewById(R.id.studentName_textView))).setTextColor(Color.BLACK);
+            ((TextView) (listItem.findViewById(R.id.studentNumber_textView))).setTextColor(Color.BLACK);
+            ((TextView) (listItem.findViewById(R.id.studentValues_textView))).setTextColor(Color.BLACK);
+            ((TextView) (listItem.findViewById(R.id.studentStatus_textView))).setTextColor(Color.BLACK);
+        }
         return listItem;
+    }
+
+    public boolean isDarkmode() {
+        return darkmode;
+    }
+
+    public void setDarkmode(boolean darkmode) {
+        this.darkmode = darkmode;
     }
 }

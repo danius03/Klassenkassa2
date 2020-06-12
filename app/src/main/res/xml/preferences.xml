@@ -7,11 +7,13 @@
         android:summary="Notifications zur Erinnerung der fälligen Zahlungen"
         android:title="Notifications" />
     <SwitchPreference
+        android:id="@+id/switch_darkmode"
         android:defaultValue="false"
         android:key="preference_darkmode"
         android:summary="Darkmode für die App"
         android:title="Darkmode" />
     <SwitchPreference
+        android:id="@+id/switch_sensor"
         android:defaultValue="false"
         android:key="preference_dynamic_darkmode"
         android:summary="Der Darkmode wird automatisch aktiviert, wenn die Umgebungshelligkeit des Gerätes dunkel genug ist"

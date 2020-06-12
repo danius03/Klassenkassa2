@@ -1,11 +1,14 @@
 package com.example.klassenkassa.activities;
 
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.provider.Settings;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -15,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -52,6 +56,26 @@ public class MasterFragment extends Fragment {
     private final String URL = "http://restapi.eu";
     private int currentCategoryID;
 
+    public boolean isDarkmode() {
+        return darkmode;
+    }
+
+    public void setDarkmode(boolean darkmode) {
+        this.darkmode = darkmode;
+    }
+
+    public boolean isDarkmodeSensor() {
+        return darkmodeSensor;
+    }
+
+    public void setDarkmodeSensor(boolean darkmodeSensor) {
+        this.darkmodeSensor = darkmodeSensor;
+    }
+
+    private boolean darkmode;
+    private boolean darkmodeSensor;
+    private FrameLayout l;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -78,6 +102,26 @@ public class MasterFragment extends Fragment {
             Student item=students.get(position);
             listener.OnSelectionChanged(position, item);
         });
+        l = view.findViewById(R.id.fragment_master);
+        if(darkmode)
+        {
+            l.setBackgroundColor(Color.DKGRAY);
+            sAdapter.setDarkmode(true);
+            sAdapter.notifyDataSetChanged();
+        }
+    }
+
+    public void changeDarkmode(int brightness)
+    {
+        if (brightness > 100) {
+            darkmode = true;
+            l.setBackgroundColor(Color.DKGRAY);
+            sAdapter.setDarkmode(true);
+        } else {
+            darkmode = false;
+            l.setBackgroundColor(Color.WHITE);
+            sAdapter.setDarkmode(false);
+        }
     }
 
     @Override
@@ -289,6 +333,10 @@ public class MasterFragment extends Fragment {
         this.students=students;
         sAdapter = new StudentAdapter(getActivity(), R.layout.student_list, students);
         slistView.setAdapter(sAdapter);
+        sAdapter.notifyDataSetChanged();
+    }
+
+    public void notifySetChanged() {
         sAdapter.notifyDataSetChanged();
     }
 }

@@ -2,6 +2,7 @@ package com.example.klassenkassa.activities;
 
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.preference.PreferenceFragmentCompat;
 

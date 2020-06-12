@@ -1,6 +1,7 @@
 package com.example.klassenkassa.data;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ public class CategoryAdapter extends BaseAdapter {
     private List<Category> categories;
     private int layoutId;
     private LayoutInflater inflater;
+    private boolean darkmode;
 
     public CategoryAdapter(Context ctx, int layoutId, List<Category> categories) {
         this.categories = categories;
@@ -47,6 +49,25 @@ public class CategoryAdapter extends BaseAdapter {
         ((TextView) (listItem.findViewById(R.id.categoryName_textView))).setText(c.getName());
         ((TextView) (listItem.findViewById(R.id.dueDate_textView))).setText(c.getDueDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         ((TextView) (listItem.findViewById(R.id.cost_textView))).setText(c.getCost()+"€");
+        if(darkmode)
+        {
+            ((TextView) (listItem.findViewById(R.id.categoryName_textView))).setTextColor(Color.WHITE);
+            ((TextView) (listItem.findViewById(R.id.dueDate_textView))).setTextColor(Color.WHITE);
+            ((TextView) (listItem.findViewById(R.id.cost_textView))).setTextColor(Color.WHITE);
+        }else
+        {
+            ((TextView) (listItem.findViewById(R.id.categoryName_textView))).setTextColor(Color.BLACK);
+            ((TextView) (listItem.findViewById(R.id.dueDate_textView))).setTextColor(Color.BLACK);
+            ((TextView) (listItem.findViewById(R.id.cost_textView))).setTextColor(Color.BLACK);
+        }
         return listItem;
+    }
+
+    public boolean isDarkmode() {
+        return darkmode;
+    }
+
+    public void setDarkmode(boolean darkmode) {
+        this.darkmode = darkmode;
     }
 }
