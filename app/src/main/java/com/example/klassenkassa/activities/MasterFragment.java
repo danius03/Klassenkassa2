@@ -228,7 +228,6 @@ public class MasterFragment extends Fragment {
     }
 
     private void handleDialog(View vDialog, int pos) {
-        Activity2 activity2 = new Activity2();
 
         EditText et_number = vDialog.findViewById(R.id.studentNumber_numberText);
         EditText et_firstName = vDialog.findViewById(R.id.studentFirstName_plainText);
