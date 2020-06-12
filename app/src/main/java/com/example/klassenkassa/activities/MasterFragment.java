@@ -205,33 +205,7 @@ public class MasterFragment extends Fragment {
 
     public void loadStudents()
     {
-        students.clear();
-        GETRequest requestGET = new GETRequest(URL+"/getstudent.php?username="+username+"&password="+password);
 
-        String response = null;
-        try {
-            response = requestGET.execute("").get();
-            JSONArray jsonArray = new JSONArray(response);
-            jsonArray = jsonArray.optJSONArray(0);
-            for(int i = 0; i<jsonArray.length(); i++){
-                JSONObject jsonObject = jsonArray.optJSONObject(i);
-                int studentID = jsonObject.getInt("studentID");
-                int categoryID = jsonObject.getInt("categoryID");
-                String firstname = jsonObject.getString("firstname");
-                String lastname = jsonObject.getString("lastname");
-                float debts = (float)jsonObject.getDouble("debts");
-                Status status = Status.valueOf(jsonObject.getString("status"));
-                String additionalData = jsonObject.getString("additionalData");
-
-                students.add(new Student(studentID, categoryID, firstname, lastname, debts, status, additionalData));
-            }
-        }catch (ExecutionException e){
-            e.printStackTrace();
-        }catch (InterruptedException e){
-            e.printStackTrace();
-        } catch (JSONException e) {
-            Toast.makeText(getContext(), "Herunterladen der Daten fehlgeschlagen", Toast.LENGTH_LONG).show();
-        }
     }
 
     public void saveStudents()
@@ -277,7 +251,7 @@ public class MasterFragment extends Fragment {
                 JSONObject jsonObject=new JSONObject(response);
                 if(jsonObject.getString("message").equals("Student was created."))
                 {
-                    loadStudents();
+                    students.add(new Student(Integer.parseInt(et_number.getText().toString()), currentCategoryID, et_firstName.getText().toString(), et_lastName.getText().toString(), Double.parseDouble(et_cost.getText().toString()), Status.AUSSTEHEND, et_data.getText().toString()));
                     sAdapter.notifyDataSetChanged();
                 }
             } catch (JSONException e) {
