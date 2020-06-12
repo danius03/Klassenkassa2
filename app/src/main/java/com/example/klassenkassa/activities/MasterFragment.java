@@ -196,7 +196,7 @@ public class MasterFragment extends Fragment {
         EditText et_lastName = vDialog.findViewById(R.id.studentSurname_plainText);
         et_lastName.setText(students.get(position).getLastname());
         EditText et_cost = vDialog.findViewById(R.id.studentCost_plainText);
-        et_cost.setText("");
+        et_cost.setText(students.get(position).getCost()+"");
         EditText et_data = vDialog.findViewById(R.id.studentData_plainText);
         et_data.setText(students.get(position).getAdditionalData());
 
