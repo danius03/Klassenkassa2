@@ -73,12 +73,20 @@ public class MasterFragment extends Fragment {
     private final String URL = "http://restapi.eu";
     private int currentCategoryID;
 
+    private boolean darkmode;
+    private boolean darkmodeSensor;
+    private FrameLayout l;
+
     public boolean isDarkmode() {
         return darkmode;
     }
 
     public void setDarkmode(boolean darkmode) {
         this.darkmode = darkmode;
+        sAdapter.setDarkmode(darkmode);
+        if(darkmode==true) {
+            l.setBackgroundColor(Color.DKGRAY);
+        }
     }
 
     public boolean isDarkmodeSensor() {
@@ -89,9 +97,7 @@ public class MasterFragment extends Fragment {
         this.darkmodeSensor = darkmodeSensor;
     }
 
-    private boolean darkmode;
-    private boolean darkmodeSensor;
-    private FrameLayout l;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

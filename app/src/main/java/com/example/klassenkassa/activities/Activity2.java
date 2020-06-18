@@ -97,6 +97,10 @@ public class Activity2 extends AppCompatActivity implements OnSelectionChangedLi
                 }
                 if (oldBrightness != brightness) {
                     masterFragment.changeDarkmode(brightness);
+                    if(showDetail)
+                    {
+                        detailFragment.changeDarkmode(brightness);
+                    }
                     Activity2.this.runOnUiThread(() -> masterFragment.notifySetChanged());
                 }
 
@@ -126,6 +130,11 @@ public class Activity2 extends AppCompatActivity implements OnSelectionChangedLi
             Intent intent = new Intent(this, DetailActivity.class);
             intent.putExtra("POS", pos);
             intent.putExtra("STUDENT", (Serializable) item);
+            if(!darkmodeSensor) {
+                intent.putExtra("darkmode", darkmode);
+            }else {
+                intent.putExtra("sensor", darkmodeSensor);
+            }
             startActivity(intent);
         }
     }
