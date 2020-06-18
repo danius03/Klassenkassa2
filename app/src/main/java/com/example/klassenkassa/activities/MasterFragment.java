@@ -71,7 +71,9 @@ public class MasterFragment extends Fragment {
     private String password = "user2020";
     private String filename = "students.csv";
     private final String URL = "http://restapi.eu";
+
     private int currentCategoryID;
+    private float currentCategoryCost;
 
     private boolean darkmode;
     private boolean darkmodeSensor;
@@ -228,7 +230,7 @@ public class MasterFragment extends Fragment {
             try {
                 JSONObject jsonObject = new JSONObject(response);
                 if (jsonObject.getString("message").equals("Student was put.")) {
-                    loadStudents();
+                    loadStudents(currentCategoryID, currentCategoryCost);
                     sAdapter.notifyDataSetChanged();
                 }
             } catch (JSONException e) {
@@ -263,7 +265,11 @@ public class MasterFragment extends Fragment {
         setUpDialog(vDialog, position);
     }
 
-    public void loadStudents() {
+    public void loadStudents(int currentCategoryID, float currentCategoryCost) {
+        this.currentCategoryID = currentCategoryID;
+        this.currentCategoryCost = currentCategoryCost;
+
+
         if (getActivity().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 2);
         } else {
@@ -294,11 +300,29 @@ public class MasterFragment extends Fragment {
                 text = text + line;
             }
             students = gson.fromJson(text, token.getType());
+            sAdapter.notifyDataSetChanged();
             in.close();
+
+            String response = null;
+            for (int i = 0; i < students.size(); i++) {
+                String jsonRequest = "{\"studentID\":" + "\""+students.get(i).getStudentID()+ "\"" + ",\"categoryID\":" + "\"" + currentCategoryID + "\"," + "\"firstname\":" + "\"" + students.get(i).getFirstname() + "\"," + "\"lastname\":" + "\"" + students.get(i).getLastname() + "\"," + "\"debts\":" + "\"" + currentCategoryCost + "\"," + "\"status\":" + "\"" + students.get(i).getStatus() + "\"," + "\"additionalData\":" + "\"" + students.get(i).getAdditionalData() + "\"}";
+                POSTRequest request_post = new POSTRequest(URL + "/createstudent.php?username=" + username + "&password=" + password);
+                response = request_post.execute(jsonRequest).get();
+                JSONObject jsonObject = new JSONObject(response);
+                if (jsonObject.getString("message").equals("Student was created.")) {
+                    System.out.println("Saved in Cloud and on SD");
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        sAdapter.notifyDataSetChanged();
+
         Toast.makeText(getActivity(), "loaded", Toast.LENGTH_SHORT).show();
     }
 
@@ -331,22 +355,9 @@ public class MasterFragment extends Fragment {
             out.flush();
             out.close();
 
-            String response = null;
-            for (int i = 0; i < students.size(); i++) {
-                String jsonRequest = "{\"studentID\":" + "\""+students.get(i).getStudentID()+ "\"" + ",\"categoryID\":" + "\"" + currentCategoryID + "\"," + "\"firstname\":" + "\"" + students.get(i).getFirstname() + "\"," + "\"lastname\":" + "\"" + students.get(i).getLastname() + "\"," + "\"debts\":" + "\"" + students.get(i).getCost() + "\"," + "\"status\":" + "\"" + students.get(i).getStatus() + "\"," + "\"additionalData\":" + "\"" + students.get(i).getAdditionalData() + "\"}";
-                    POSTRequest request_post = new POSTRequest(URL + "/createstudent.php?username=" + username + "&password=" + password);
-                    response = request_post.execute(jsonRequest).get();
-                    JSONObject jsonObject = new JSONObject(response);
-                    if (jsonObject.getString("message").equals("Student was created.")) {
-                        System.out.println("Saved in Cloud and on SD");
-                    }
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
+
+
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -354,8 +365,9 @@ public class MasterFragment extends Fragment {
 
     }
 
-    public void createNewStudent(int currentCategoryID) {
+    public void createNewStudent(int currentCategoryID, float currentCategoryCost) {
         this.currentCategoryID = currentCategoryID;
+        this.currentCategoryCost = currentCategoryCost;
 
         final View vDialog = getLayoutInflater().inflate(R.layout.add_student, null);
         setUpDialog(vDialog, -1);
@@ -372,6 +384,7 @@ public class MasterFragment extends Fragment {
         EditText et_firstName = vDialog.findViewById(R.id.studentFirstName_plainText);
         EditText et_lastName = vDialog.findViewById(R.id.studentSurname_plainText);
         EditText et_cost = vDialog.findViewById(R.id.studentCost_plainText);
+        et_cost.setText((int)currentCategoryCost);
         EditText et_data = vDialog.findViewById(R.id.studentData_plainText);
         String response = null;
 
@@ -412,7 +425,7 @@ public class MasterFragment extends Fragment {
             try {
                 JSONObject jsonObject = new JSONObject(response);
                 if (jsonObject.getString("message").equals("Student was put.")) {
-                    loadStudents();
+                    loadStudents(currentCategoryID, currentCategoryCost);
                     sAdapter.notifyDataSetChanged();
                 }
             } catch (JSONException e) {

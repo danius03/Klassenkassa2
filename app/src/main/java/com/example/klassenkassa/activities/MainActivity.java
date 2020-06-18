@@ -97,8 +97,10 @@ public class MainActivity extends AppCompatActivity {
             int selection = categories.get(position).getCategoryID();
             Intent intent = new Intent(this, Activity2.class);
             intent.putExtra("selection", selection);
+            intent.putExtra("cost", categories.get(position).getCost());
             intent.putExtra("darkmode", darkmode);
             intent.putExtra("sensor", allowDarkmodeSensor);
+
             startActivity(intent);
         });
 

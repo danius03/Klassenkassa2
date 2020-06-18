@@ -46,6 +46,7 @@ public class Activity2 extends AppCompatActivity implements OnSelectionChangedLi
     private boolean darkmodeSensor;
 
     public int currentCategoryID;
+    public float currentCategoryCost;
 
     private List<Student> students = new ArrayList<>();
     private String username = "app";
@@ -65,6 +66,7 @@ public class Activity2 extends AppCompatActivity implements OnSelectionChangedLi
         configActionBar();
         if (getIntent().getExtras() != null) {
             currentCategoryID = getIntent().getExtras().getInt("selection");
+            currentCategoryCost = getIntent().getExtras().getFloat("cost");
         }
         fillItemsList();
         bs = new BrightnessSensor();
@@ -157,14 +159,14 @@ public class Activity2 extends AppCompatActivity implements OnSelectionChangedLi
 
         switch (id) {
             case R.id.new_student:
-                masterFragment.createNewStudent(currentCategoryID);
+                masterFragment.createNewStudent(currentCategoryID, currentCategoryCost);
 
                 break;
             case R.id.save_students:
                 masterFragment.saveStudents();
                 break;
             case R.id.load_students:
-                masterFragment.loadStudents();
+                masterFragment.loadStudents(currentCategoryID, currentCategoryCost);
                 break;
             case android.R.id.home:
                 Intent data = new Intent(this, MainActivity.class);
