@@ -300,7 +300,8 @@ public class MasterFragment extends Fragment {
                 text = text + line;
             }
             students = gson.fromJson(text, token.getType());
-            sAdapter.notifyDataSetChanged();
+            setStudents(students);
+
             in.close();
 
             String response = null;
