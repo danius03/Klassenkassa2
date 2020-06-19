@@ -184,6 +184,8 @@ public class Activity2 extends AppCompatActivity implements OnSelectionChangedLi
         try {
             response = requestGET.execute("").get();
             JSONArray jsonArray = new JSONArray(response);
+            if(jsonArray.length()!=0)
+            {
             jsonArray = jsonArray.optJSONArray(0);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.optJSONObject(i);
@@ -196,6 +198,7 @@ public class Activity2 extends AppCompatActivity implements OnSelectionChangedLi
                     String additionalData = jsonObject.getString("additionalData");
                     Status status = Status.valueOf(statusString);
                     students.add(new Student(studentID, currentCategoryID, firstname, lastname, debts, status, additionalData));
+                }
                 }
             }
         } catch (ExecutionException e) {

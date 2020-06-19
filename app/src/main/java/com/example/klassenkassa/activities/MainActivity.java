@@ -1,5 +1,6 @@
 package com.example.klassenkassa.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
@@ -52,6 +53,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -310,12 +312,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private LocalDate ldate;
+
     private void edit(int position) {
         final View vDialog = getLayoutInflater().inflate(R.layout.add_category, null);
         EditText et_cat = vDialog.findViewById(R.id.categoryName_plainText);
         et_cat.setText(categories.get(position).getName());
-        EditText et_due = vDialog.findViewById(R.id.categoryDate_calendarView);
-        et_due.setText(categories.get(position).getDueDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        CalendarView et_due = vDialog.findViewById(R.id.categoryDate_calendarView);
+        long date = categories.get(position).getDueDate().getLong(ChronoField.EPOCH_DAY)*86400000;
+        et_due.setDate(date);
+        et_due.setOnDateChangeListener((view, year, month, dayOfMonth) -> ldate = LocalDate.of(year, month+1, dayOfMonth));
         EditText et_cost = vDialog.findViewById(R.id.categoryCost_plainText);
         et_cost.setText(categories.get(position).getCost() + "");
         setUpDialog(vDialog, categories.get(position).getCategoryID());
@@ -325,6 +331,8 @@ public class MainActivity extends AppCompatActivity {
         final View vDialog = getLayoutInflater().inflate(R.layout.add_category, null);
         EditText et_cost = vDialog.findViewById(R.id.categoryCost_plainText);
         et_cost.setText("");
+        CalendarView et_due = vDialog.findViewById(R.id.categoryDate_calendarView);
+        et_due.setOnDateChangeListener((view, year, month, dayOfMonth) -> ldate = LocalDate.of(year, month+1, dayOfMonth));
         setUpDialog(vDialog, -1);
     }
 
@@ -342,13 +350,12 @@ public class MainActivity extends AppCompatActivity {
         EditText et_name = vDialog.findViewById(R.id.categoryName_plainText);
         EditText et_cost = vDialog.findViewById(R.id.categoryCost_plainText);
         CalendarView et_due = vDialog.findViewById(R.id.categoryDate_calendarView);
-        LocalDate date = Instant.ofEpochMilli(et_due.getDate()).atZone(ZoneId.systemDefault()).toLocalDate();
         String response = null;
         double cost = 0;
         if (!et_cost.getText().toString().equals("")) {
             cost = Double.parseDouble(et_cost.getText().toString());
         }
-        jsonRequest = "{\"name\":" + "\"" + et_name.getText().toString() + "\"" + ",\"dueDate\":" + "\"" + date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "\"," + "\"cost\":" + "\"" + cost + "\"}";
+        jsonRequest = "{\"name\":" + "\"" + et_name.getText().toString() + "\"" + ",\"dueDate\":" + "\"" + ldate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "\"," + "\"cost\":" + "\"" + cost + "\"}";
         if (pos == -1) {
             POSTRequest request_post = new POSTRequest(URL + "/createcategory.php?username=" + username + "&password=" + password);
             try {
@@ -400,6 +407,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             response = requestGET.execute("").get();
             JSONArray jsonArray = new JSONArray(response);
+            if(jsonArray.length()!=0){
             jsonArray = jsonArray.optJSONArray(0);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.optJSONObject(i);
@@ -410,6 +418,7 @@ public class MainActivity extends AppCompatActivity {
                 LocalDate dt = LocalDate.parse(date, dtf);
 
                 categories.add(new Category(categoryID, name, dt, cost));
+            }
             }
         } catch (ExecutionException e) {
             e.printStackTrace();
