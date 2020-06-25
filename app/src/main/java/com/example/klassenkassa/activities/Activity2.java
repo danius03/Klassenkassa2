@@ -74,6 +74,7 @@ public class Activity2 extends AppCompatActivity implements OnSelectionChangedLi
         darkmode = getIntent().getBooleanExtra("darkmode", false);
         darkmodeSensor = getIntent().getBooleanExtra("sensor", false);
         masterFragment.setDarkmode(darkmode);
+        masterFragment.setActivity(this);
 
         if (darkmodeSensor) {
 
@@ -177,9 +178,9 @@ public class Activity2 extends AppCompatActivity implements OnSelectionChangedLi
         return super.onOptionsItemSelected(item);
     }
 
-    private void fillItemsList() {
+    public void fillItemsList() {
         GETRequest requestGET = new GETRequest(URL + "/getstudent.php?username=" + username + "&password=" + password);
-
+        students = new ArrayList<>();
         String response = null;
         try {
             response = requestGET.execute("").get();
@@ -201,6 +202,7 @@ public class Activity2 extends AppCompatActivity implements OnSelectionChangedLi
                 }
                 }
             }
+            masterFragment.setStudents(students);
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

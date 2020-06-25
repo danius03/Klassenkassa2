@@ -156,7 +156,9 @@ public class MainActivity extends AppCompatActivity {
 
         if (!darkmode) {
             if (allowDarkmodeSensor) {
-                bs.start();
+                    bs = new BrightnessSensor();
+                    bs.start();
+
             } else {
                 darkmode = false;
                 l.setBackgroundColor(Color.WHITE);

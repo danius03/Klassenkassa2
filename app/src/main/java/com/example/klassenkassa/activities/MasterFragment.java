@@ -58,6 +58,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -78,6 +79,7 @@ public class MasterFragment extends Fragment {
     private boolean darkmode;
     private boolean darkmodeSensor;
     private FrameLayout l;
+    private Activity2 activity2;
 
     public boolean isDarkmode() {
         return darkmode;
@@ -115,6 +117,11 @@ public class MasterFragment extends Fragment {
         if (context instanceof OnSelectionChangedListener) {
             listener = (OnSelectionChangedListener) context;
         }
+    }
+
+    public void setActivity(Activity2 activity)
+    {
+        activity2 = activity;
     }
 
     private void initializeViews(View view) {
@@ -220,6 +227,16 @@ public class MasterFragment extends Fragment {
                     "\",\"status\":\"" + newStatus +
                     "\",\"additionalData\":\"" + student.getAdditionalData() + "\"}";
             String response = "";
+            students.remove(student);
+            if(newCost==0)
+            {
+                student.setStatus(Status.BEZAHLT);
+            }else
+            {
+                student.setStatus(Status.TEILWEISE_BEZAHLT);
+            }
+            student.setCost(newCost);
+            students.add(student);
             try {
                 response = request_post.execute(jsonRequest).get();
             } catch (ExecutionException e) {
@@ -231,6 +248,7 @@ public class MasterFragment extends Fragment {
                 JSONObject jsonObject = new JSONObject(response);
                 if (jsonObject.getString("message").equals("Student was put.")) {
                     loadStudents(currentCategoryID, currentCategoryCost);
+                    Collections.sort(students);
                     sAdapter.notifyDataSetChanged();
                 }
             } catch (JSONException e) {
@@ -299,21 +317,24 @@ public class MasterFragment extends Fragment {
             while ((line = in.readLine()) != null) {
                 text = text + line;
             }
-            students = gson.fromJson(text, token.getType());
-            setStudents(students);
-
+            List<Student> students = gson.fromJson(text, token.getType());
             in.close();
-
             String response = null;
             for (int i = 0; i < students.size(); i++) {
-                String jsonRequest = "{\"studentID\":" + "\""+students.get(i).getStudentID()+ "\"" + ",\"categoryID\":" + "\"" + currentCategoryID + "\"," + "\"firstname\":" + "\"" + students.get(i).getFirstname() + "\"," + "\"lastname\":" + "\"" + students.get(i).getLastname() + "\"," + "\"debts\":" + "\"" + currentCategoryCost + "\"," + "\"status\":" + "\"" + students.get(i).getStatus() + "\"," + "\"additionalData\":" + "\"" + students.get(i).getAdditionalData() + "\"}";
+                students.get(i).setAdditionalData("");
+                students.get(i).setStatus(Status.AUSSTEHEND);
+                students.get(i).setCost(currentCategoryCost);
+                String jsonRequest = "{\"studentID\":" + "\""+students.get(i).getStudentID()+ "\"" + ",\"categoryID\":" + "\"" + currentCategoryID + "\"," + "\"firstname\":" + "\"" + students.get(i).getFirstname() + "\"," + "\"lastname\":" + "\"" + students.get(i).getLastname() + "\"," + "\"debts\":" + "\"" + currentCategoryCost + "\"," + "\"status\":" + "\"" + Status.AUSSTEHEND + "\"," + "\"additionalData\":" + "\" \"}";
                 POSTRequest request_post = new POSTRequest(URL + "/createstudent.php?username=" + username + "&password=" + password);
                 response = request_post.execute(jsonRequest).get();
                 JSONObject jsonObject = new JSONObject(response);
                 if (jsonObject.getString("message").equals("Student was created.")) {
+                    activity2.fillItemsList();
                     System.out.println("Saved in Cloud and on SD");
                 }
             }
+
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -371,6 +392,8 @@ public class MasterFragment extends Fragment {
         this.currentCategoryCost = currentCategoryCost;
 
         final View vDialog = getLayoutInflater().inflate(R.layout.add_student, null);
+        EditText et_cost= vDialog.findViewById(R.id.studentCost_plainText);
+        et_cost.setText(currentCategoryCost+"");
         setUpDialog(vDialog, -1);
     }
 
@@ -385,7 +408,6 @@ public class MasterFragment extends Fragment {
         EditText et_firstName = vDialog.findViewById(R.id.studentFirstName_plainText);
         EditText et_lastName = vDialog.findViewById(R.id.studentSurname_plainText);
         EditText et_cost = vDialog.findViewById(R.id.studentCost_plainText);
-        et_cost.setText((int)currentCategoryCost);
         EditText et_data = vDialog.findViewById(R.id.studentData_plainText);
         String response = null;
 
@@ -439,6 +461,7 @@ public class MasterFragment extends Fragment {
     public void setStudents(List<Student> students) {
         this.students = students;
         sAdapter = new StudentAdapter(getActivity(), R.layout.student_list, students);
+        sAdapter.setDarkmode(darkmode);
         slistView.setAdapter(sAdapter);
         sAdapter.notifyDataSetChanged();
     }
