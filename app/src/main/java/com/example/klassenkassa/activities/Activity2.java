@@ -74,6 +74,9 @@ public class Activity2 extends AppCompatActivity implements OnSelectionChangedLi
         darkmode = getIntent().getBooleanExtra("darkmode", false);
         darkmodeSensor = getIntent().getBooleanExtra("sensor", false);
         masterFragment.setDarkmode(darkmode);
+        if(showDetail) {
+            detailFragment.setDarkmode(darkmode);
+        }
         masterFragment.setActivity(this);
 
         if (darkmodeSensor) {

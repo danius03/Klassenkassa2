@@ -247,7 +247,7 @@ public class MasterFragment extends Fragment {
             try {
                 JSONObject jsonObject = new JSONObject(response);
                 if (jsonObject.getString("message").equals("Student was put.")) {
-                    loadStudents(currentCategoryID, currentCategoryCost);
+                    /*loadStudents(currentCategoryID, currentCategoryCost);*/
                     Collections.sort(students);
                     sAdapter.notifyDataSetChanged();
                 }
@@ -409,9 +409,10 @@ public class MasterFragment extends Fragment {
         EditText et_lastName = vDialog.findViewById(R.id.studentSurname_plainText);
         EditText et_cost = vDialog.findViewById(R.id.studentCost_plainText);
         EditText et_data = vDialog.findViewById(R.id.studentData_plainText);
+
         String response = null;
 
-        String jsonRequest = "{\"studentID\":" + "\"" + et_number.getText().toString() + "\"" + ",\"categoryID\":" + "\"" + currentCategoryID + "\"," + "\"firstname\":" + "\"" + et_firstName.getText().toString() + "\"," + "\"lastname\":" + "\"" + et_lastName.getText().toString() + "\"," + "\"debts\":" + "\"" + et_cost.getText().toString() + "\"," + "\"status\":" + "\"" + Status.AUSSTEHEND + "\"," + "\"additionalData\":" + "\"" + et_data.getText().toString() + "\"}";
+        String jsonRequest = "{\"studentID\":" + "\"" + et_number.getText().toString() + "\"" + ",\"categoryID\":" + "\"" + currentCategoryID + "\"," + "\"firstname\":" + "\"" + et_firstName.getText().toString() + "\"," + "\"lastname\":" + "\"" + et_lastName.getText().toString() + "\"," + "\"debts\":" + "\"" + et_cost.getText().toString() + "\"," + "\"status\":" + "\"" + Status.AUSSTEHEND + "\"," + "\"additionalData\":" + "\"" + et_data.getText().toString() + " \"}";
         if (pos == -1) {
             POSTRequest request_post = new POSTRequest(URL + "/createstudent.php?username=" + username + "&password=" + password);
             try {

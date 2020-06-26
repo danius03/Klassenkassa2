@@ -79,16 +79,19 @@ public class DetailActivity extends AppCompatActivity {
     }
     @Override
     public void finish() {
-        if(bs.isAlive()) {
-            try {
-                bs.run=false;
-                bs.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        if(bs!=null) {
+            if (bs.isAlive()) {
+                try {
+                    bs.run = false;
+                    bs.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
         super.finish();
     }
+
 
     private void configActionBar() {
         ActionBar actionBar = getSupportActionBar();
@@ -106,4 +109,5 @@ public class DetailActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
